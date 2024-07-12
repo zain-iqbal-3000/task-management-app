@@ -26,6 +26,26 @@ const TaskListPage = () => {
         fetchTasks();
     }, []);
 
+    useEffect(() => {
+        const ws = new WebSocket('ws://localhost:5000');
+      
+        ws.onopen = () => {
+          console.log('Connected to WebSocket');
+        };
+      
+        ws.onmessage = (event) => {
+          console.log('Message from server ', event.data);
+        };
+      
+        ws.onclose = () => {
+          console.log('Disconnected from WebSocket');
+        };
+      
+        return () => {
+          ws.close();
+        };
+      }, []);
+
     const handleAddComment = async (taskId, comment, userEmail) => {
         try {
             await addComment(taskId, comment, userEmail);
